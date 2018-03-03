@@ -12,4 +12,16 @@ contract ZombieOwnership is ZombieBattle, ERC721 {
   function ownerOf(uint256 _tokenId) public view returns (address _owner) {
     return zombieToOwner[_tokenId];
   }
+  
+  function _transfer(address _from, address _to, uint256 _tokenId) private {
+    ownerZombieCount[_to]++;
+    ownerZombieCount[_from]--;
+    zombieToOwner[_tokenId] = _to;
+    
+    Transfer(_from, _to, _tokenId);
+  }
+  
+  function transfer(address _to, address _from, uint256 _tokenId) {
+    _transfer(msg.sender, _to, _tokenId);
+  }
 }
