@@ -1,8 +1,13 @@
 pragma solidity ^0.4.19;
 
 import "./zombiefeeding.sol";
+import "./safemath.sol";
 
 contract ZombieHelper is ZombieFeeding {
+
+  using SafeMath32 for uint256;
+  using SafeMath32 for uint32;
+  using SafeMath16 for uint16;
 
   uint levelUpFee = 0.001 ether;
 
@@ -14,6 +19,12 @@ contract ZombieHelper is ZombieFeeding {
   function withdraw() external onlyOwner {
     owner.transfer(this.balance);
   }
+  
+  function levelUp(uint _zombieId) external payable {
+    require(msg.value == levelUpFee);
+    uint32 _level = zombies[_zombieId].level.add(1);
+    zombies[_zombieId].level = _level;
+  }  
 
   function setLevelUpFee(uint _fee) external onlyOwner {
     levelUpFee = _fee;
