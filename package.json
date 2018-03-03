@@ -1,7 +1,7 @@
 {
-  "name": "cryptothingy",
+  "name": "cryptozombies",
   "version": "1.0.0",
-  "description": "react ethereum DApp\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[C\u001b[Csmart contract DApp",
+  "description": "ethereum crypto-collectible DApp",
   "main": "index.js",
   "scripts": {
     "test": "mocha -c"
