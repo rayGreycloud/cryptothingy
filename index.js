@@ -1,11 +1,11 @@
-var cryptoZombies;
-var userAccount;
+let cryptoZombies;
+let userAccount;
 
 function startApp() {
-  var cryptoZombiesAddress = "YOUR_CONTRACT_ADDRESS";
+  let cryptoZombiesAddress = "YOUR_CONTRACT_ADDRESS";
   cryptoZombies = new web3js.eth.Contract(cryptoZombiesABI, cryptoZombiesAddress);
 
-  var accountInterval = setInterval(function() {
+  let accountInterval = setInterval(function() {
     if (web3.eth.accounts[0] !== userAccount) {
       userAccount = web3.eth.accounts[0];
 
@@ -13,6 +13,16 @@ function startApp() {
       .then(displayZombies);
     }
   }, 100);
+  
+  let web3Infura = new Web3(new Web3.providers.WebsocketProvider("wss://mainnet.infura.io/ws"));
+  let czEvents = new web3Infura.eth.Contract(cryptoZombiesABI, cryptoZombiesAddress);
+  
+  czEvents.events.Transfer({ filter: { _to: userAccount } })
+  .on("data", function(event) {
+  let data = event.returnValues;
+  
+  getZombiesByOwner(userAccount).then(displayZombies);
+}).on("error", console.error);
 }
 
 function displayZombies(ids) {
@@ -64,6 +74,20 @@ function feedOnKitty(zombieId, kittyId) {
   .on("error", function(error) {
     $("#txStatus").text(error);
   });
+}
+
+function attack(zombieId, targetId) {
+  $("#txStatus").text("Attacking a zombie. This may take a while...");
+  
+  return CryptoZombies.methods.attack(zombieId, targetId)
+  .send({ from: userAccount })
+  .on("receipt", function(receipt) {
+    $("#txStatus").text("The attack on the enemy zombie has finished. Let's see the results");
+    getZombiesByOwner(userAccount).then(displayZombies);
+  })
+  .on("error", function(error) {
+    $("#txStatus").text(error);
+  });  
 }
 
 function levelUp(zombieId) {
