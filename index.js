@@ -82,7 +82,7 @@ function attack(zombieId, targetId) {
   return CryptoZombies.methods.attack(zombieId, targetId)
   .send({ from: userAccount })
   .on("receipt", function(receipt) {
-    $("#txStatus").text("The attack on the enemy zombie has finished. Let's see the results");
+    $("#txStatus").text("The attack on the enemy zombie has finished. You can see the results on your zombie's listing");
     getZombiesByOwner(userAccount).then(displayZombies);
   })
   .on("error", function(error) {
@@ -101,6 +101,20 @@ function levelUp(zombieId) {
   .on("error", function(error) {
     $("#txStatus").text(error);
   });
+}
+
+function changeName(zombieId, newName) {
+  $("#txStatus").text("Changing your zombie's name. This may take a while...");
+  
+  return CryptoZombies.methods.changeName(zombieId, newName)
+  .send({ from: userAccount })
+  .on("receipt", function(receipt) {
+    $("#txStatus").text("Your zombie's name was successfully changed.");
+    getZombiesByOwner(userAccount).then(displayZombies);
+  })
+  .on("error", function(error) {
+    $("#txStatus").text(error);
+  });  
 }
 
 function getZombieDetails(id) {
