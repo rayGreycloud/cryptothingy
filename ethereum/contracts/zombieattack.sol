@@ -33,6 +33,7 @@ contract ZombieBattle is ZombieHelper {
   * @modifier onlyOwnerOf restricts to owner of attacking zombie
   */
   function attack(uint _zombieId, uint _targetId) external onlyOwnerOf(_zombieId) {
+    // Save ids of attacker and target 
     Zombie storage myZombie = zombies[_zombieId];
     Zombie storage enemyZombie = zombies[_targetId];
     uint rand = randMod(100);
