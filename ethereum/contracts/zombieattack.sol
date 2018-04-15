@@ -18,7 +18,7 @@ contract ZombieBattle is ZombieHelper {
 
   /**
   * @dev Function to generate pseudo-random number representing attack results.
-  * @param uint _modulus Number used in rng process.
+  * @param _modulus Number used in rng process.
   * @return pseudo-random uint.
   */
   function randMod(uint _modulus) internal returns(uint) {
@@ -30,7 +30,7 @@ contract ZombieBattle is ZombieHelper {
   * @dev Function to simulate attack on another zombie and process results 
   * @param _zombieId The uint id of attacking zombie.
   * @param _targetId The uint id of zombie target.
-  * @modifier onlyOwnerOf restricts to owner of attacking zombie
+  * @dev onlyOwnerOf restricts to owner of attacking zombie
   */
   function attack(uint _zombieId, uint _targetId) external onlyOwnerOf(_zombieId) {
     // Save ids of attacker and target 
